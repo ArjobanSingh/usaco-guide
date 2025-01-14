@@ -1,33 +1,48 @@
+#include <bits/stdc++.h>
 #include <iostream>
+
 using namespace std;
 
-#define dbg(v) cout << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;
+#define dbg(v)                                                                 \
+  cout << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;
 
-int main()
-{
-    const int MOD = 1000000007;
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+vector<int> res{-1};
 
-    int M, N;
-    cin >> M >> N;
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
-    long long total = 0;
+  freopen("shell.in", "r", stdin);
+  freopen("shell.out", "w", stdout);
 
-    while (N--)
-    {
-        long long num;
-        cin >> num;
+  int n;
+  cin >> n;
 
-        total += num;
-        if (M == 1)
-        {
-            cout << total % MOD << "\n";
-        }
+  vector<tuple<int, int, int>> input;
+  while (n--) {
+    int a, b, g;
+    cin >> a >> b >> g;
+
+    input.push_back(make_tuple(a - 1, b - 1, g - 1));
+  }
+
+  int result = 0;
+  for (int i = 0; i < 3; i++) {
+    vector<bool> shells(3, false);
+    shells[i] = true;
+
+    int inner_sum = 0;
+    for (const auto &t : input) {
+      int a, b, g;
+      tie(a, b, g) = t;
+
+      swap(shells[a], shells[b]);
+
+      if (shells[g]) { inner_sum++; }
     }
 
-    if (M == 0)
-    {
-        cout << total % MOD << "\n";
-    }
+    result = max(result, inner_sum);
+  }
+
+  cout << result << "\n";
 }

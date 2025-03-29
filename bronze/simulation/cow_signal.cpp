@@ -6,9 +6,6 @@ using namespace std;
 #define dbg(v)                                                                 \
   cout << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;
 
-const int BLOCK = 'X';
-const int PATH  = '.';
-
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -20,7 +17,7 @@ int main() {
 
   cin >> m >> n >> k;
 
-  vector<vector<char>> grid(m, vector<char>(n, BLOCK));
+  vector<vector<char>> grid(m, vector<char>(n, 'X'));
 
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) { cin >> grid[i][j]; }

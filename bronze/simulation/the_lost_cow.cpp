@@ -9,6 +9,9 @@ using namespace std;
 const int LOW  = 0;
 const int HIGH = 1000;
 
+// TC: Log2(|x - y|) or Log2(Distance), as we increasing distance travelled in
+// each iteration by 2x, meaning exponentially, so reaching the ans in Log2
+// times.
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);

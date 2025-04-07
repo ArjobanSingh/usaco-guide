@@ -6,69 +6,55 @@ using namespace std;
 #define dbg(v)                                                                 \
   cout << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;
 
-const int rowSize   = 3;
-const int colSize   = 3;
-const int boardSize = rowSize * colSize;
-
-string arrToKey(array<int, 2> &coords) {
-  return to_string(coords[0]) + ":" + to_string(coords[1]);
-}
-
-// Top -> Right -> Bottom -> Left. (X, Y) coords, top & right is +1,
-// bottom and left is -1
-int dirs[4][2] = {
-  { 0,  1},
-  { 1,  0},
-  { 0, -1},
-  {-1,  0}
-};
-
-void simulateAndUpdate(array<int, 2> &coords, int num, int dirIdx,
-                       unordered_map<string, int> &map, int &ans, int &turn) {
-  int *dir = dirs[dirIdx];
-  for (int i = 0; i < num; i++) {
-    coords[0] += dir[0];
-    coords[1] += dir[1];
-
-    string newKey    = arrToKey(coords);
-    int    prevValue = map[newKey];
-    if (prevValue) { ans = min(ans, turn - prevValue); }
-    map[newKey] = turn;
-    turn++;
-  }
-}
-
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  freopen("mowing.in", "r", stdin);
-  freopen("mowing.out", "w", stdout);
+  freopen("censor.in", "r", stdin);
+  freopen("censor.out", "w", stdout);
 
-  int n;
-  cin >> n;
-  array<int, 2>              coords = {0, 0}; // X, Y
-  unordered_map<string, int> map;
-  int                        ans = INT_MAX;
+  string s;
+  string t;
+  cin >> s >> t;
+  // auto start = chrono::high_resolution_clock::now();
 
-  int turn = 1;
-  for (int i = 0; i < n; i++) {
-    char dir;
-    int  num;
+  while (true) {
+    string newStr = "";
+    size_t tIdx   = 0;
+    size_t i      = 0;
 
-    cin >> dir >> num;
-    switch (dir) {
-      case 'N': simulateAndUpdate(coords, num, 0, map, ans, turn); break;
-      case 'E': simulateAndUpdate(coords, num, 1, map, ans, turn); break;
-      case 'S': simulateAndUpdate(coords, num, 2, map, ans, turn); break;
-      case 'W': simulateAndUpdate(coords, num, 3, map, ans, turn); break;
-      default : break;
+    // cout << "here " << s.length() << "\n";
+    while (i < s.length()) {
+      if (t[tIdx] != s[i]) {
+        // didn't match, start comparing again from cur_start's idx + 1.
+        size_t startIdx = i - tIdx;
+        newStr.push_back(s[startIdx]);
+        i    = startIdx + 1;
+        tIdx = 0;
+      } else if (tIdx == t.length() - 1) {
+        // matched whole substring;
+        tIdx = 0;
+        i++;
+      } else if (i == s.length() - 1) {
+        // not matched completely but, main string is exhausted
+        // so push all chars which we didn't push till now.
+        for (size_t j = i - tIdx; j <= i; j++) { newStr.push_back(s[j]); }
+        tIdx = 0;
+        i++;
+      } else {
+        // matched but not completely yet.
+        i++;
+        tIdx++;
+      }
     }
+
+    if (s.length() == newStr.length()) { break; }
+    s = newStr;
   }
 
-  if (ans == INT_MAX) {
-    cout << -1 << "\n";
-  } else {
-    cout << ans << "\n";
-  }
+  // auto end      = chrono::high_resolution_clock::now();
+  // auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+  // std::cout << "Execution time: " << duration.count() << " ms\n";
+
+  cout << s << "\n";
 }

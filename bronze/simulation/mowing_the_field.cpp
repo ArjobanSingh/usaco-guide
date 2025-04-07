@@ -6,10 +6,6 @@ using namespace std;
 #define dbg(v)                                                                 \
   cout << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;
 
-const int rowSize   = 3;
-const int colSize   = 3;
-const int boardSize = rowSize * colSize;
-
 string arrToKey(array<int, 2> &coords) {
   return to_string(coords[0]) + ":" + to_string(coords[1]);
 }
